@@ -1,0 +1,25 @@
+function [ oob_err ] = BaggedTrees( X, Y, numBags )
+%BAGGEDTREES Returns out-of-bag classification error of an ensemble of
+%numBags CART decision trees on the input dataset, and also plots the error
+%as a function of the number of bags from 1 to numBags
+%   Inputs:
+%       X : Matrix of training data
+%       Y : Vector of classes of the training examples
+%       numBags : Number of trees to learn in the ensemble
+%
+%   You may use "fitctree" but do not use "TreeBagger" or any other inbuilt
+%   bagging function
+obb_err = zeros(numBags,1)
+[numData,~] = size(X);
+trees = cell(numBags,1);
+indexData = zeros(numData,numBags);
+
+for i=1:numBags
+    index = randi([1,numData],numData,1);
+    feature = X(index,:);
+    label = Y(index,:);
+    tree = fitctree(feature, label);
+    trees{i} = tree;
+    indexData(:,i) = index
+
+ 
